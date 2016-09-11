@@ -12,24 +12,30 @@
 Summary:	Luminance HDR - HDR Image compositor
 Summary(pl.UTF-8):	Luminance HDR - narzędzie do składania obrazów HDR
 Name:		luminance-hdr
-Version:	2.3.1
+Version:	2.4.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/qtpfsgui/%{name}-%{version}.tar.bz2
-# Source0-md5:	86499294fb9a6dc211a54cbaa9af2b8a
-Patch0:		%{name}-qt4pld.patch
+# Source0-md5:	b22c9bca0330d80bdec38d37fc94ad93
+Patch0:		%{name}-qprinter.patch
 URL:		http://qtpfsgui.sourceforge.net/
-BuildRequires:	OpenEXR-devel
-BuildRequires:	QtCore-devel >= 4.3
-BuildRequires:	QtGui-devel >= 4.3
-BuildRequires:	QtNetwork-devel >= 4.3
-BuildRequires:	QtSql-devel >= 4.3
-BuildRequires:	QtWebKit-devel >= 4.3
-BuildRequires:	QtXml-devel >= 4.3
+BuildRequires:	CCfits-devel
+BuildRequires:	OpenEXR-devel >= 2.0.1
+BuildRequires:	Qt5Concurrent-devel >= 5
+BuildRequires:	Qt5Core-devel >= 5
+BuildRequires:	Qt5Declarative-devel >= 5
+BuildRequires:	Qt5Gui-devel >= 5
+BuildRequires:	Qt5Network-devel >= 5
+BuildRequires:	Qt5PrintSupport-devel >= 5
+BuildRequires:	Qt5Sql-devel >= 5
+BuildRequires:	Qt5WebKit-devel >= 5
+BuildRequires:	Qt5Widgets-devel >= 5
+BuildRequires:	Qt5Xml-devel >= 5
 BuildRequires:	boost-devel
-BuildRequires:	cmake >= 2.6.0
-BuildRequires:	exiv2-devel >= 0.12
+BuildRequires:	cfitsio-devel
+BuildRequires:	cmake >= 2.8.11
+BuildRequires:	exiv2-devel >= 0.21
 BuildRequires:	fftw3-single-devel >= 3
 BuildRequires:	gcc-c++ >= 6:4.3
 BuildRequires:	gsl-devel
@@ -40,20 +46,15 @@ BuildRequires:	libpng-devel
 BuildRequires:	libraw-devel
 BuildRequires:	libstdc++-devel >= 6:4.3
 BuildRequires:	libtiff-devel
-BuildRequires:	qt4-build >= 4.3.3-3
-BuildRequires:	qt4-linguist >= 4.3.3-3
-BuildRequires:	qt4-qmake >= 4.3.3-3
+BuildRequires:	qt5-build >= 5
+BuildRequires:	qt5-linguist >= 5
+BuildRequires:	qt5-qmake >= 5
 BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRequires:	sed >= 4.0
 Requires(post,postun):	gtk-update-icon-cache
-Requires:	QtCore >= 4.3
-Requires:	QtGui >= 4.3
-Requires:	QtNetwork >= 4.3
-Requires:	QtSql >= 4.3
-Requires:	QtSql-sqlite3 >= 4.3
-Requires:	QtWebKit >= 4.3
-Requires:	QtXml >= 4.3
-Requires:	exiv2 >= 0.12
+Requires:	OpenEXR >= 2.0.1
+Requires:	Qt5Sql-sqldriver-sqlite3
+Requires:	exiv2-libs >= 0.21
 Requires:	hicolor-icon-theme
 Obsoletes:	qtpfsgui
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -92,7 +93,7 @@ rm -rf $RPM_BUILD_ROOT
 
 # packaged as %doc
 %{__rm} $RPM_BUILD_ROOT%{_datadir}/luminance-hdr/{AUTHORS,Changelog,LICENSE,README}
-# use Qt translations packaged with qt4
+# use Qt translations packaged with qt5
 %{__rm} $RPM_BUILD_ROOT%{_datadir}/luminance-hdr/i18n/qt_*.qm
 
 %clean
@@ -119,14 +120,13 @@ rm -rf $RPM_BUILD_ROOT
 %lang(es) %{_datadir}/luminance-hdr/i18n/lang_es.qm
 %lang(fi) %{_datadir}/luminance-hdr/i18n/lang_fi.qm
 %lang(fr) %{_datadir}/luminance-hdr/i18n/lang_fr.qm
-%lang(hi) %{_datadir}/luminance-hdr/i18n/lang_hi.qm
 %lang(hu) %{_datadir}/luminance-hdr/i18n/lang_hu.qm
 %lang(id) %{_datadir}/luminance-hdr/i18n/lang_id.qm
 %lang(it) %{_datadir}/luminance-hdr/i18n/lang_it.qm
 %lang(pl) %{_datadir}/luminance-hdr/i18n/lang_pl.qm
+%lang(pt_BR) %{_datadir}/luminance-hdr/i18n/lang_pt_BR.qm
 %lang(ro) %{_datadir}/luminance-hdr/i18n/lang_ro.qm
 %lang(ru) %{_datadir}/luminance-hdr/i18n/lang_ru.qm
-%lang(sk) %{_datadir}/luminance-hdr/i18n/lang_sk.qm
 %lang(tr) %{_datadir}/luminance-hdr/i18n/lang_tr.qm
 %lang(zh_CN) %{_datadir}/luminance-hdr/i18n/lang_zh.qm
 %{_desktopdir}/luminance-hdr.desktop
