@@ -53,6 +53,7 @@ BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRequires:	sed >= 4.0
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	OpenEXR >= 2.0.1
+Requires:	Qt5Gui-platform-xcb
 Requires:	Qt5Sql-sqldriver-sqlite3
 Requires:	exiv2-libs >= 0.21
 Requires:	hicolor-icon-theme
