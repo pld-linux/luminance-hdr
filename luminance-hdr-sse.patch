@@ -1,0 +1,68 @@
+--- luminance-hdr-2.5.1/src/TonemappingOperators/mantiuk08/display_function.h.orig	2017-05-10 21:14:06.000000000 +0200
++++ luminance-hdr-2.5.1/src/TonemappingOperators/mantiuk08/display_function.h	2017-06-25 08:34:32.605245903 +0200
+@@ -38,6 +38,10 @@
+ #include "Libpfs/utils/sse.h"
+ #include <Libpfs/exception.h>
+ 
++#ifdef LUMINANCE_USE_SSE
++using pfs::utils::v4sf;
++#endif
++
+ class DisplayFunction
+ {
+ public:
+--- luminance-hdr-2.5.1/src/Libpfs/utils/sse.cpp.orig	2017-05-10 21:14:06.000000000 +0200
++++ luminance-hdr-2.5.1/src/Libpfs/utils/sse.cpp	2017-06-25 09:17:55.551882851 +0200
+@@ -23,6 +23,7 @@
+ //! @author Davide Anastasia, <davideanastasia@users.sourceforge.net>
+ 
+ #include <Libpfs/utils/numeric.h>
++#include <Libpfs/utils/sse.h>
+ 
+ namespace pfs {
+ namespace utils {
+--- luminance-hdr-2.5.1/src/Libpfs/utils/sse.h.orig	2017-05-10 21:14:06.000000000 +0200
++++ luminance-hdr-2.5.1/src/Libpfs/utils/sse.h	2017-06-25 09:32:27.331872888 +0200
+@@ -25,9 +25,6 @@
+ #ifndef PFS_UTILS_SSE_H
+ #define PFS_UTILS_SSE_H
+ 
+-namespace pfs {
+-namespace utils {
+-
+ #ifdef __SSE__
+ 
+ //#if __ppc__ || __ppc7400__ || __ppc64__ || __ppc970__
+@@ -46,6 +43,9 @@
+ 
+ #endif // __SSE__
+ 
++namespace pfs {
++namespace utils {
++
+ #ifdef LUMINANCE_USE_SSE
+ typedef __v4sf v4sf;
+ v4sf _mm_log2_ps(v4sf);
+--- luminance-hdr-2.5.1/src/TonemappingOperators/mantiuk08/display_adaptive_tmo.cpp.orig	2017-05-10 21:14:06.000000000 +0200
++++ luminance-hdr-2.5.1/src/TonemappingOperators/mantiuk08/display_adaptive_tmo.cpp	2017-06-25 09:43:53.761865057 +0200
+@@ -156,6 +156,9 @@
+ 
+ #ifdef LUMINANCE_USE_SSE
+ 
++using pfs::utils::_mm_log2_ps;
++using pfs::utils::_mm_pow_ps;
++
+ #define LOG2_10 3.3219280948874f
+ #define LOG2_10__1 (1.0f/LOG2_10)
+ static inline v4sf safe_log10( v4sf x, const float min_x = MIN_PHVAL, const float max_x = MAX_PHVAL )
+--- luminance-hdr-2.5.1/src/TonemappingOperators/mantiuk08/display_function.cpp.orig	2017-05-10 21:14:06.000000000 +0200
++++ luminance-hdr-2.5.1/src/TonemappingOperators/mantiuk08/display_function.cpp	2017-06-25 09:44:55.215197686 +0200
+@@ -95,6 +95,8 @@
+ 
+ #ifdef LUMINANCE_USE_SSE
+ 
++using pfs::utils::_mm_pow_ps;
++
+ v4sf DisplayFunctionGGBA::inv_display( v4sf L )
+ {
+   const v4sf voffset = _mm_set1_ps(L_offset);
