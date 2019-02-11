@@ -9,7 +9,7 @@ Summary:	Luminance HDR - HDR Image compositor
 Summary(pl.UTF-8):	Luminance HDR - narzędzie do składania obrazów HDR
 Name:		luminance-hdr
 Version:	2.5.1
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/qtpfsgui/%{name}-%{version}.tar.bz2
@@ -17,6 +17,7 @@ Source0:	http://downloads.sourceforge.net/qtpfsgui/%{name}-%{version}.tar.bz2
 # http://downloads.sourceforge.net/qtpfsgui/luminance-hdr-2.5.1-qtwebkit.patch
 Patch0:		%{name}-qtwebkit.patch
 Patch1:		%{name}-sse.patch
+Patch2:		exiv2-version.patch
 URL:		http://qtpfsgui.sourceforge.net/
 BuildRequires:	CCfits-devel
 BuildRequires:	OpenEXR-devel >= 2.0.1
@@ -71,6 +72,7 @@ Luminance HDR - narzędzie do składania obrazów HDR.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 mkdir build

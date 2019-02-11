@@ -1,0 +1,10 @@
+--- luminance-hdr-2.5.1/src/TransplantExif/TransplantExifDialog.cpp~	2017-05-10 21:14:06.000000000 +0200
++++ luminance-hdr-2.5.1/src/TransplantExif/TransplantExifDialog.cpp	2019-02-11 21:42:32.324665095 +0100
+@@ -26,6 +26,7 @@
+ #include <QFileInfo>
+ #include <image.hpp>
+ #include <exif.hpp>
++#include <version.hpp>
+ 
+ #include "Common/global.h"
+ #include "Common/config.h"
