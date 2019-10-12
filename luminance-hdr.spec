@@ -8,16 +8,12 @@
 Summary:	Luminance HDR - HDR Image compositor
 Summary(pl.UTF-8):	Luminance HDR - narzędzie do składania obrazów HDR
 Name:		luminance-hdr
-Version:	2.5.1
-Release:	6
+Version:	2.6.0
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/qtpfsgui/%{name}-%{version}.tar.bz2
-# Source0-md5:	055278df2b370542ea57fcae86455ce5
-# http://downloads.sourceforge.net/qtpfsgui/luminance-hdr-2.5.1-qtwebkit.patch
-Patch0:		%{name}-qtwebkit.patch
-Patch1:		%{name}-sse.patch
-Patch2:		exiv2-version.patch
+# Source0-md5:	9ac2be847d304f0ddc7089b251825c4d
 URL:		http://qtpfsgui.sourceforge.net/
 BuildRequires:	CCfits-devel
 BuildRequires:	OpenEXR-devel >= 2.0.1
@@ -70,9 +66,6 @@ Luminance HDR - narzędzie do składania obrazów HDR.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
 
 %build
 mkdir build
@@ -81,7 +74,8 @@ cd build
 CXXFLAGS="%{rpmcxxflags} -msse2 -DLUMINANCE_USE_SSE=1"
 %endif
 %cmake .. \
-	-DBUILD_SHARED_LIBS:BOOL=OFF
+	-DBUILD_SHARED_LIBS:BOOL=OFF \
+	-DCMAKE_BUILD_TYPE=Release
 
 %{__make}
 
@@ -92,7 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 # packaged as %doc
-%{__rm} $RPM_BUILD_ROOT%{_datadir}/luminance-hdr/{AUTHORS,Changelog,LICENSE,README.md}
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/luminance-hdr/doc/{AUTHORS,Changelog,LICENSE,README.md}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -129,6 +123,6 @@ rm -rf $RPM_BUILD_ROOT
 %lang(ru) %{_datadir}/luminance-hdr/i18n/lang_ru.qm
 %lang(tr) %{_datadir}/luminance-hdr/i18n/lang_tr.qm
 %lang(zh_CN) %{_datadir}/luminance-hdr/i18n/lang_zh.qm
-%{_datadir}/appdata/luminance-hdr.appdata.xml
-%{_desktopdir}/luminance-hdr.desktop
+%{_datadir}/appdata/net.sourceforge.qtpfsgui.LuminanceHDR.appdata.xml
+%{_desktopdir}//net.sourceforge.qtpfsgui.LuminanceHDR.desktop
 %{_iconsdir}/hicolor/48x48/apps/luminance-hdr.png
