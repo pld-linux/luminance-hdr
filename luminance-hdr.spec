@@ -15,6 +15,7 @@ Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/qtpfsgui/%{name}-%{version}.tar.bz2
 # Source0-md5:	9ac2be847d304f0ddc7089b251825c4d
 Patch0:		buildtype.patch
+Patch1:		sse_header.patch
 URL:		http://qtpfsgui.sourceforge.net/
 BuildRequires:	CCfits-devel
 BuildRequires:	OpenEXR-devel >= 2.0.1
@@ -68,6 +69,7 @@ Luminance HDR - narzędzie do składania obrazów HDR.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 mkdir build

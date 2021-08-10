@@ -1,0 +1,10 @@
+--- luminance-hdr-2.6.0/src/Libpfs/utils/sse.cpp.orig	2021-08-11 00:34:13.601845869 +0200
++++ luminance-hdr-2.6.0/src/Libpfs/utils/sse.cpp	2021-08-11 00:34:23.308628465 +0200
+@@ -23,6 +23,7 @@
+ //! @author Davide Anastasia, <davideanastasia@users.sourceforge.net>
+ 
+ #include <Libpfs/utils/numeric.h>
++#include <Libpfs/utils/sse.h>
+ 
+ namespace pfs {
+ namespace utils {
