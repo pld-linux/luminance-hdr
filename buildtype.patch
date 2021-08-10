@@ -1,0 +1,19 @@
+--- luminance-hdr-2.6.0/CMakeLists.txt.orig	2019-06-09 21:18:38.000000000 +0200
++++ luminance-hdr-2.6.0/CMakeLists.txt	2021-08-11 00:17:06.339778891 +0200
+@@ -6,14 +6,14 @@
+ PROJECT("Luminance HDR")
+ 
+ string(TOLOWER ${CMAKE_BUILD_TYPE} LOWERCASE_CMAKE_BUILD_TYPE)
+-if(LOWERCASE_CMAKE_BUILD_TYPE MATCHES "^(debug|release|relwithdebinfo|minsizerel)$")
++if(LOWERCASE_CMAKE_BUILD_TYPE MATCHES "^(debug|release|relwithdebinfo|minsizerel|pld)$")
+     message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+ else()
+     message(FATAL_ERROR "Invalid value for CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}\n"
+         "CMAKE_BUILD_TYPE should be one of:\nDebug, Release, RelWithDebInfo, MinSizeRel")
+ endif()
+ 
+-if(LOWERCASE_CMAKE_BUILD_TYPE MATCHES "^(release|minsizerel)$")
++if(LOWERCASE_CMAKE_BUILD_TYPE MATCHES "^(release|minsizerel|pld)$")
+     message(STATUS "Adding definitions: -DQT_NO_DEBUG_OUTPUT")
+     add_definitions("-DQT_NO_DEBUG_OUTPUT")
+ endif()
