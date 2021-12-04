@@ -6,6 +6,10 @@
 %ifarch pentium4 %{x8664} x32
 %define	with_sse2	1
 %endif
+%ifarch x32
+# Qt5WebEngine not available on th-x32
+%undefine	with_qtwebengine
+%endif
 Summary:	Luminance HDR - HDR Image compositor
 Summary(pl.UTF-8):	Luminance HDR - narzędzie do składania obrazów HDR
 Name:		luminance-hdr
