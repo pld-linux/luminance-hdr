@@ -1,0 +1,25 @@
+--- luminance-hdr-2.6.1.1/build_files/Modules/FindOpenEXR.cmake.orig	2026-07-05 20:36:45.624507480 +0200
++++ luminance-hdr-2.6.1.1/build_files/Modules/FindOpenEXR.cmake	2026-07-05 20:36:49.371153849 +0200
+@@ -45,7 +45,7 @@ if (${OPENEXR_VERSION} VERSION_LESS "2.1
+     IlmThread
+     Imath
+   )
+-else ()
++elseif (${OPENEXR_VERSION} VERSION_LESS "3.0")
+   string(REGEX REPLACE "([0-9]+)[.]([0-9]+).*" "\\1_\\2" _openexr_libs_ver ${OPENEXR_VERSION})
+   SET(_openexr_FIND_COMPONENTS
+     Half
+@@ -54,6 +54,13 @@ else ()
+     IlmThread-${_openexr_libs_ver}
+     Imath-${_openexr_libs_ver}
+   )
++else ()
++  SET(_openexr_FIND_COMPONENTS
++    OpenEXR OpenEXRUtil OpenEXRCore
++    Iex
++    IlmThread
++    Imath
++  )
+ endif ()
+ 
+ SET(_openexr_SEARCH_DIRS

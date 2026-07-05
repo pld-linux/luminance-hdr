@@ -22,9 +22,13 @@ Source0:	https://downloads.sourceforge.net/qtpfsgui/%{name}-%{version}.tar.bz2
 Patch0:		buildtype.patch
 Patch1:		sse_header.patch
 Patch2:		std-header.patch
+Patch3:		%{name}-boost.patch
+Patch4:		%{name}-OpenEXR.patch
+Patch5:		%{name}-exiv2.patch
 URL:		http://qtpfsgui.sourceforge.net/
 BuildRequires:	CCfits-devel
-BuildRequires:	OpenEXR-devel >= 2.0.1
+BuildRequires:	Imath-devel
+BuildRequires:	OpenEXR-devel >= 3.0
 BuildRequires:	Qt5Concurrent-devel >= 5
 BuildRequires:	Qt5Core-devel >= 5
 BuildRequires:	Qt5Declarative-devel >= 5
@@ -41,7 +45,7 @@ BuildRequires:	boost-devel
 BuildRequires:	cfitsio-devel
 BuildRequires:	cmake >= 3.3
 BuildRequires:	eigen3
-BuildRequires:	exiv2-devel >= 0.21
+BuildRequires:	exiv2-devel >= 0.28
 BuildRequires:	fftw3-single-devel >= 3
 BuildRequires:	gcc-c++ >= 6:4.3
 BuildRequires:	gsl-devel
@@ -59,10 +63,10 @@ BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRequires:	sed >= 4.0
 %{!?with_qtwebengine:BuildConflicts:	Qt5WebEngine-devel}
 Requires(post,postun):	gtk-update-icon-cache
-Requires:	OpenEXR >= 2.0.1
+Requires:	OpenEXR >= 3.0
 Requires:	Qt5Gui-platform-xcb
 Requires:	Qt5Sql-sqldriver-sqlite3
-Requires:	exiv2-libs >= 0.21
+Requires:	exiv2-libs >= 0.28
 Requires:	hicolor-icon-theme
 Obsoletes:	qtpfsgui < 2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -78,6 +82,9 @@ Luminance HDR - narzędzie do składania obrazów HDR.
 %patch -P0 -p1
 %patch -P1 -p1
 %patch -P2 -p1
+%patch -P3 -p1
+%patch -P4 -p1
+%patch -P5 -p1
 
 %build
 install -d build
@@ -85,8 +92,10 @@ cd build
 %if %{with sse2}
 CXXFLAGS="%{rpmcxxflags} -msse2 -DLUMINANCE_USE_SSE=1"
 %endif
+CPPFLAGS="%{rpmcppflags} -I/usr/include/Imath"
 %cmake .. \
-	-DBUILD_SHARED_LIBS:BOOL=OFF
+	-DBUILD_SHARED_LIBS:BOOL=OFF \
+	-DOPENEXR_VERSION=3.0
 
 %{__make}
 

@@ -1,0 +1,122 @@
+--- luminance-hdr-2.6.1.1/src/Libpfs/exif/exifdata.cpp.orig	2026-07-05 20:52:22.272766554 +0200
++++ luminance-hdr-2.6.1.1/src/Libpfs/exif/exifdata.cpp	2026-07-05 20:55:09.725192720 +0200
+@@ -52,7 +52,7 @@ ExifData::ExifData(const std::string &fi
+ void ExifData::fromFile(const std::string &filename) {
+     reset();
+     try {
+-        ::Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(filename);
++        ::Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(filename);
+         image->readMetadata();
+         ::Exiv2::ExifData &exifData = image->exifData();
+ 
+@@ -121,7 +121,7 @@ void ExifData::fromFile(const std::strin
+          */
+         if ((it = exifData.findKey(Exiv2::ExifKey("Exif.Image.Orientation"))) !=
+             exifData.end()) {
+-            long rotation = it->toLong();
++            int64_t rotation = it->toInt64();
+             switch (rotation) {
+                 case 3:
+                     m_orientation = 180;
+@@ -134,7 +134,7 @@ void ExifData::fromFile(const std::strin
+                     break;
+             }
+         }
+-    } catch (Exiv2::AnyError &e) {
++    } catch (Exiv2::Error &e) {
+         return;
+     }
+ }
+--- luminance-hdr-2.6.1.1/src/Exif/ExifOperations.cpp.orig	2026-07-05 21:02:32.382794638 +0200
++++ luminance-hdr-2.6.1.1/src/Exif/ExifOperations.cpp	2026-07-05 21:02:56.912661748 +0200
+@@ -108,7 +108,7 @@ void copyExifData(const std::string &fro
+ #endif
+ 
+     try {
+-        Exiv2::Image::AutoPtr sourceImage;
++        Exiv2::Image::UniquePtr sourceImage;
+         Exiv2::ExifData srcExifData;
+ 
+         if (!from.empty()) {
+@@ -128,7 +128,7 @@ void copyExifData(const std::string &fro
+         }
+ 
+         // get destination exif data
+-        Exiv2::Image::AutoPtr destinationImage = Exiv2::ImageFactory::open(to);
++        Exiv2::Image::UniquePtr destinationImage = Exiv2::ImageFactory::open(to);
+ 
+         if (dontOverwrite) {
+             // doesn't throw anything if it is empty
+@@ -212,7 +212,7 @@ void copyExifData(const std::string &fro
+             destinationImage->setExifData(srcExifData);
+         }
+         destinationImage->writeMetadata();
+-    } catch (Exiv2::AnyError &e) {
++    } catch (Exiv2::Error &e) {
+ #ifndef NDEBUG
+         qDebug() << e.what();
+ #endif
+@@ -250,7 +250,7 @@ float obtain_avg_lum(const std::string&
+ {
+     try
+     {
+-        Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(filename);
++        Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(filename);
+         image->readMetadata();
+         Exiv2::ExifData &exifData = image->exifData();
+         if (exifData.empty())
+@@ -329,7 +329,7 @@ allowed for ev computation purposes.
+             return -1;
+         }
+     }
+-    catch (Exiv2::AnyError& e)
++    catch (Exiv2::Error& e)
+     {
+         return -1;
+     }
+@@ -338,7 +338,7 @@ allowed for ev computation purposes.
+ 
+ float getExposureTime(const std::string &filename) {
+     try {
+-        Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(filename);
++        Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(filename);
+         image->readMetadata();
+         Exiv2::ExifData &exifData = image->exifData();
+         if (exifData.empty()) return -1;
+@@ -374,14 +374,14 @@ float getExposureTime(const std::string
+         } else {
+             return -1;
+         }
+-    } catch (Exiv2::AnyError &e) {
++    } catch (Exiv2::Error &e) {
+         return -1;
+     }
+ }
+ 
+ float getAverageLuminance(const std::string &filename) {
+     try {
+-        Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open(filename);
++        Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(filename);
+         image->readMetadata();
+         Exiv2::ExifData &exifData = image->exifData();
+ 
+@@ -403,7 +403,7 @@ float getAverageLuminance(const std::str
+                   << std::endl;
+ 
+         return -1.0;
+-    } catch (Exiv2::AnyError &e) {
++    } catch (Exiv2::Error &e) {
+         return -1.0;
+     }
+ }
+--- luminance-hdr-2.6.1.1/src/TransplantExif/TransplantExifDialog.cpp.orig	2026-07-05 21:31:43.599974146 +0200
++++ luminance-hdr-2.6.1.1/src/TransplantExif/TransplantExifDialog.cpp	2026-07-05 21:31:49.313276528 +0200
+@@ -347,7 +347,7 @@ void TransplantExifDialog::transplant_re
+                 QFile::encodeName((*i_dest)).constData(),
+                 m_Ui->checkBox_dont_overwrite->isChecked());
+             m_Ui->rightlist->item(index)->setBackground(QBrush("#a0ff87"));
+-        } catch (Exiv2::AnyError &e) {
++        } catch (Exiv2::Error &e) {
+             add_log_message("ERROR:" + QString::fromStdString(e.what()));
+             m_Ui->rightlist->item(index)->setBackground(QBrush("#ff743d"));
+         }

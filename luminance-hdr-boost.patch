@@ -1,0 +1,34 @@
+--- luminance-hdr-2.6.1.1/CMakeLists.txt.orig	2026-07-05 17:56:08.613382319 +0200
++++ luminance-hdr-2.6.1.1/CMakeLists.txt	2026-07-05 17:56:20.886649162 +0200
+@@ -177,7 +177,6 @@ IF(WIN32)
+     SET(Boost_USE_STATIC_LIBS ON)
+ ENDIF()
+ FIND_PACKAGE(Boost REQUIRED COMPONENTS program_options thread chrono system date_time)
+-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+ 
+ FIND_PACKAGE(Exiv2 REQUIRED)
+ INCLUDE_DIRECTORIES(${EXIV2_INCLUDE_DIR} "${EXIV2_INCLUDE_DIR}/exiv2")
+--- luminance-hdr-2.6.1.1/build_files/Modules/CompilerSettings.cmake.orig	2026-07-05 20:44:22.202033987 +0200
++++ luminance-hdr-2.6.1.1/build_files/Modules/CompilerSettings.cmake	2026-07-05 20:44:59.498498602 +0200
+@@ -13,7 +13,10 @@ ENDIF()
+ if("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
+     add_definitions(-DBRANCH_PREDICTION)
+     execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
+-    if (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
++    if (GCC_VERSION VERSION_GREATER 5.0 OR GCC_VERSION VERSION_EQUAL 5.0)
++        set(CMAKE_CXX_STANDARD 14)
++        add_definitions(-DLHDR_CXX11_ENABLED)
++    elseif (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
+         message(STATUS "C++11 activated for GCC ${GCC_VERSION}")
+         set(CMAKE_CXX_STANDARD 11)
+         add_definitions(-DLHDR_CXX11_ENABLED)
+--- luminance-hdr-2.6.1.1/src/Libpfs/manip/resize.hxx.orig	2026-07-05 20:48:38.143980764 +0200
++++ luminance-hdr-2.6.1.1/src/Libpfs/manip/resize.hxx	2026-07-05 20:51:03.896524488 +0200
+@@ -23,6 +23,7 @@
+ #define PFS_RESIZE_HXX
+ 
+ #include <boost/math/constants/constants.hpp>
++#include <boost/numeric/conversion/bounds.hpp>
+ #include "copy.h"
+ #include "resize.h"
+ #include "../../sleef.c"
