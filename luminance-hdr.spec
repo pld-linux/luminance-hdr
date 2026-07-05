@@ -25,7 +25,7 @@ Patch2:		std-header.patch
 Patch3:		%{name}-boost.patch
 Patch4:		%{name}-OpenEXR.patch
 Patch5:		%{name}-exiv2.patch
-URL:		http://qtpfsgui.sourceforge.net/
+URL:		https://qtpfsgui.sourceforge.net/
 BuildRequires:	CCfits-devel
 BuildRequires:	Imath-devel
 BuildRequires:	OpenEXR-devel >= 3.0
